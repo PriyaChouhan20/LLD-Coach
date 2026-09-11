@@ -19,7 +19,7 @@ An interactive developer practice platform engineered for software engineers to 
 3. **Dual-Tier Hybrid Evaluation Engine**:
    - **Deterministic Evaluation**: Structural completeness checks, core entity detection, and design pattern keyword heuristics.
    - **AI-Assisted Semantic Evaluation**: Deep review of SOLID principles (SRP, OCP, LSP, ISP, DIP), coupling/cohesion, and concurrency bottlenecks.
-   - **Resilient Fallback Engine**: If no API key is provided or external LLMs rate-limit/timeout, the platform gracefully switches to heuristic evaluation with **zero crashes**.
+   - **Resilient Fallback Engine**: If no API key is provided or external LLMs rate-limit/timeout, the platform gracefully falls back to heuristic evaluation if the external LLM is unavailable, times out, or fails.
 4. **Rich Explainable Feedback**:
    - 100-Point Score Gauge & Verdict (Mastered, Solid Progress, Needs Revision, Incomplete).
    - Category-wise scoring bars (SOLID, Class Design, Extensibility, Edge Cases).
@@ -35,7 +35,7 @@ An interactive developer practice platform engineered for software engineers to 
 
 - **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, Lucide Icons, React Router v6.
 - **Backend**: Node.js, Express.js, TypeScript, Mongoose (with automated In-Memory fallback), Zod.
-- **AI Providers Supported**: Google Gemini (`gemini-1.5-flash`), OpenAI (`gpt-4o-mini`), and Offline Mock Provider.
+- **AI Providers Supported**: Google Gemini (`gemini-2.5-flash`), OpenAI (`gpt-4o-mini`), and Offline Mock Provider.
 - **Testing**: Vitest, Supertest (100% passing unit & integration tests).
 
 ---
