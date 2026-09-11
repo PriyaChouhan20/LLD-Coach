@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "Backend service for LLD Coach practice platform",
   "type": "module",
-  "main": "dist/app.js",
+  "main": "src/app.js",
   "scripts": {
-    "dev": "tsx watch src/app.ts",
-    "build": "tsc",
-    "start": "node dist/app.js",
-    "seed": "tsx src/data/seed/seedRunner.ts",
+    "dev": "node --watch src/app.js",
+    "start": "node src/app.js",
+    "seed": "node src/data/seed/seedRunner.js",
     "test": "vitest run tests/",
     "test:watch": "vitest tests/"
   },
@@ -21,13 +20,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/node": "^22.10.7",
-    "@types/supertest": "^6.0.2",
     "supertest": "^7.0.0",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.3",
     "vitest": "^3.0.4"
   }
 }
