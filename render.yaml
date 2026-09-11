@@ -1,0 +1,30 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: lld-coach-backend
+    runtime: node
+    plan: free
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: AI_PROVIDER
+        value: auto
+
+  # Frontend Static Site
+  - type: web
+    name: lld-coach-frontend
+    runtime: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://lld-coach-othz.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
