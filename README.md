@@ -1,132 +1,344 @@
-# 🚀 LLD Coach — Low-Level Design Practice & Evaluation Platform
+# LLD Coach — Low-Level Design Practice & Evaluation Platform
 
-An interactive developer practice platform engineered for software engineers to design, submit, and receive instant, explainable feedback on classic **Low-Level Design (LLD)** and **Object-Oriented Design (OOD)** interview challenges.
-
----
+LLD Coach is an interactive practice platform designed to help learners practice Low-Level Design (LLD) interview problems, submit their designs, receive explainable feedback, review previous attempts, and improve through repeated practice.
 
 ## 🌟 Key Features
 
-1. **Curated Problem Catalog**:
-   - 4 seed problems: **Parking Lot**, **State-Driven Vending Machine**, **Multi-Elevator Dispatcher**, and **Library Management System**.
-   - Complete functional/non-functional requirements, expected core entities, and sample scenarios.
-2. **Structured Practice Workspace**:
-   - 4-part guided design editor:
-     - *1. Architectural Explanation & Approach*
-     - *2. Classes, Interfaces & Responsibilities*
-     - *3. Code / Pseudocode Implementation*
-     - *4. Trade-offs, Edge Cases & Concurrency*
-   - Live draft saving and reset-to-template capabilities.
-3. **Dual-Tier Hybrid Evaluation Engine**:
-   - **Deterministic Evaluation**: Structural completeness checks, core entity detection, and design pattern keyword heuristics.
-   - **AI-Assisted Semantic Evaluation**: Deep review of SOLID principles (SRP, OCP, LSP, ISP, DIP), coupling/cohesion, and concurrency bottlenecks.
-   - **Resilient Fallback Engine**: If no API key is provided or external LLMs rate-limit/timeout, the platform gracefully falls back to heuristic evaluation if the external LLM is unavailable, times out, or fails.
-4. **Rich Explainable Feedback**:
-   - 100-Point Score Gauge & Verdict (Mastered, Solid Progress, Needs Revision, Incomplete).
-   - Category-wise scoring bars (SOLID, Class Design, Extensibility, Edge Cases).
-   - Identified strengths, categorized issues (with severity tags & location hints), actionable suggestions, and a dedicated **"Recommended Next Improvement"**.
-5. **Attempt History & Iterative Practice**:
-   - Chronological attempt history with versioning.
-   - Deep-dive into previous submission snapshots and score comparisons.
-   - Direct retry workflow to refine and master problem solutions.
+### 1. Curated Problem Catalog
 
----
+The MVP includes a focused set of LLD problems:
+
+- Parking Lot
+- State-Driven Vending Machine
+- Multi-Elevator Dispatcher
+- Library Management System
+
+Each problem provides requirements, expected core entities, and enough context for the learner to design a solution.
+
+### 2. Structured Practice Workspace
+
+Learners work on a solution using four structured sections:
+
+1. Design Explanation
+2. Classes & Responsibilities
+3. Code / Pseudocode
+4. Trade-offs & Edge Cases
+
+The platform also supports saving work, reviewing previous attempts, and retrying problems.
+
+### 3. Hybrid Evaluation
+
+LLD problems can have multiple valid solutions. Therefore, LLD Coach combines deterministic validation with AI-assisted qualitative evaluation.
+
+#### Deterministic Evaluation
+
+Handles predictable checks such as:
+
+- Required sections
+- Minimum content
+- Structural completeness
+- Expected core entities
+
+#### AI-Assisted Evaluation
+
+Focuses on qualitative design aspects such as:
+
+- SOLID principles
+- Class responsibilities
+- Abstraction
+- Coupling and cohesion
+- Extensibility
+- Design patterns
+- Edge cases
+- Design trade-offs
+
+If AI evaluation is unavailable, times out, or fails, the application uses a fallback evaluator to provide basic feedback.
+
+### 4. Explainable Feedback
+
+The learner receives:
+
+- Overall score
+- Verdict
+- Category-wise scores
+- Strengths
+- Issues
+- Suggestions
+- Recommended next improvement
+
+The goal is to explain why a design can be improved instead of providing only a numeric score.
+
+### 5. Attempt History and Retry
+
+Previous attempts are stored so learners can:
+
+- Review earlier submissions
+- Track their practice history
+- Review previous feedback
+- Retry a problem
+- Improve their design based on feedback
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, Lucide Icons, React Router v6.
-- **Backend**: Node.js, Express.js, TypeScript, Mongoose (with automated In-Memory fallback), Zod.
-- **AI Providers Supported**: Google Gemini (`gemini-2.5-flash`), OpenAI (`gpt-4o-mini`), and Offline Mock Provider.
-- **Testing**: Vitest, Supertest (100% passing unit & integration tests).
+### Frontend
 
----
+- React 18
+- Vite
+- JavaScript
+- Tailwind CSS
+- Lucide React
+- React Router v6
 
-## 📂 Project Architecture
+### Backend
 
-```
-LLb Coach/
+- Node.js
+- Express.js
+- JavaScript (ES Modules)
+- Mongoose
+- Zod
+- CORS
+- dotenv
+
+### AI Providers
+
+The backend supports configurable AI evaluation providers:
+
+- Google Gemini
+- OpenAI
+- Mock/offline evaluation
+
+The provider can be selected using the `AI_PROVIDER` environment variable.
+
+### Testing
+
+- Vitest
+- Supertest
+
+## 📂 Project Structure
+
+```text
+LLD Coach/
+│
 ├── backend/
 │   ├── src/
-│   │   ├── config/            # Env validation & resilient database manager
-│   │   ├── domain/            # Domain models (Problem, Attempt, Submission, EvaluationResult)
-│   │   ├── evaluators/        # Strategy pattern engine (Deterministic, AI, Fallback, Pipeline)
-│   │   ├── repositories/      # Mongoose schemas & data access abstraction
-│   │   ├── services/          # ProblemService, AttemptService, EvaluationService
-│   │   ├── controllers/       # REST controllers with Zod validation
-│   │   ├── routes/            # Express routers
-│   │   ├── data/seed/         # 4 Seed LLD problems and auto-seeder
-│   │   └── app.ts             # Express application factory & server startup
-│   └── tests/                 # Unit & Integration test suites
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── data/
+│   │   │   └── seed/
+│   │   ├── middlewares/
+│   │   ├── repositories/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── app.js
+│   │
+│   ├── tests/
+│   ├── .env.example
+│   ├── package.json
+│   └── package-lock.json
+│
 ├── frontend/
+│   ├── public/
 │   ├── src/
-│   │   ├── components/        # UI components (ScoreGauge, CategoryBreakdown, IssueList, etc.)
-│   │   ├── pages/             # 6 Pages (Dashboard, Details, Practice, Results, History, AttemptDetail)
-│   │   ├── services/          # Typed API client
-│   │   └── App.tsx            # Routes configuration
-├── README.md                  # Project overview & guide
-├── AI_USAGE.md                # AI usage and prompt disclosures
-├── RESEARCH_NOTE.md           # Research on LLD evaluation rubrics
-└── DESIGN_NOTE.md             # Low-Level & Domain Design Document
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── App.jsx
+│   ├── package.json
+│   ├── package-lock.json
+│   └── vite.config.js
+│
+├── README.md
+├── AI_USAGE.md
+├── RESEARCH_NOTE.md
+├── DESIGN_NOTE.md
+└── render.yaml
 ```
 
----
+## 🚀 How to Run Locally
 
-## ⚡ Quick Start
+### Prerequisites
 
-### 1. Prerequisites
-- **Node.js**: v18+ (tested on Node v20/v24)
-- **npm**: v9+
+- Node.js 18+
+- npm 9+
+- MongoDB (optional; the backend can fall back to an in-memory store)
 
-### 2. Backend Setup
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/PriyaChouhan20/LLD-Coach.git
+cd LLD-Coach
+```
+
+### 2. Start the Backend
+
+Open a terminal:
+
 ```bash
 cd backend
 npm install
-
-# (Optional) Configure environment variables
-# Copy .env.example or create .env:
-# PORT=5000
-# AI_PROVIDER=auto # Options: auto, gemini, openai, mock
-# GEMINI_API_KEY=your_gemini_key_here
-# OPENAI_API_KEY=your_openai_key_here
-# MONGODB_URI=mongodb://localhost:27017/lld_coach
-
-# Run backend tests
-npm test
-
-# Start backend dev server (auto-seeds problem catalog)
-npm run dev
+npm start
 ```
 
-> **Note on MongoDB**: If a local MongoDB instance is not detected, the backend will automatically initialize its resilient in-memory database store so that the app and tests run instantly out of the box!
+The backend runs on:
 
-### 3. Frontend Setup
-In a separate terminal:
+```text
+http://localhost:5000
+```
+
+Health check:
+
+```text
+http://localhost:5000/api/health
+```
+
+### 3. Start the Frontend
+
+Open another terminal:
+
 ```bash
 cd frontend
 npm install
-
-# Start Vite dev server
 npm run dev
 ```
-Open **`http://localhost:5173`** in your browser.
 
----
+Open the local URL shown by Vite in the terminal.
 
-## 🧪 Testing Suite
+## 🔄 Learner Journey
 
-Run backend unit and integration tests:
+The main learner flow is:
+
+```text
+Choose Problem
+      ↓
+Design Solution
+      ↓
+Submit
+      ↓
+Evaluate
+      ↓
+Receive Feedback
+      ↓
+Review Attempt
+      ↓
+Retry and Improve
+```
+
+The submission is saved before evaluation so that learner work is not lost if an evaluation provider fails.
+
+## 🧠 Evaluation Approach
+
+LLD Coach uses a hybrid evaluation approach.
+
+### Deterministic Evaluation
+
+Handles predictable checks such as:
+
+- Required sections
+- Minimum content
+- Structural completeness
+- Expected core entities
+
+### AI-Assisted Evaluation
+
+Focuses on qualitative design aspects such as:
+
+- SOLID principles
+- Class responsibilities
+- Abstraction
+- Coupling and cohesion
+- Extensibility
+- Design patterns
+- Edge cases
+- Trade-offs
+
+### Fallback Evaluation
+
+If the AI provider is unavailable or fails, the application uses a fallback evaluator so that the learner can still receive basic feedback.
+
+## 🏗 Design Decisions and Trade-offs
+
+### Simple Modular Monolith
+
+The MVP uses a straightforward frontend + backend architecture instead of microservices or distributed infrastructure.
+
+This keeps the project easier to understand, develop, test, and extend within the assignment scope.
+
+### Multiple Valid LLD Designs
+
+The platform does not require learners to reproduce one exact reference solution.
+
+Evaluation focuses on design quality, responsibilities, extensibility, principles, and trade-offs.
+
+### Save Before Evaluation
+
+Submissions are persisted before evaluation begins. This prevents external AI failures from causing loss of learner work.
+
+### AI as an Optional Layer
+
+AI is used for qualitative feedback, but the core application does not depend entirely on AI availability.
+
+## 🧪 Testing
+
+Backend tests are implemented using:
+
+- Vitest
+- Supertest
+
+Run backend tests with:
+
 ```bash
 cd backend
 npm test
 ```
-The test suite validates:
-- Deterministic structural completeness and keyword entity checks.
-- AI Evaluator integration & graceful fallback execution.
-- Problem catalog seeding and API endpoints (`GET /api/problems`, `GET /api/problems/:slug`).
-- Attempt initialization, draft saving, submission evaluation, and history retrieval.
 
----
+The tests cover important API behavior and failure/edge cases.
 
-## 📜 Documentation Links
-- [DESIGN_NOTE.md](file:///c:/Users/Lenovo/Desktop/LLb%20Coach/DESIGN_NOTE.md): In-depth domain design, strategy pattern implementation, and trade-off rationale.
-- [RESEARCH_NOTE.md](file:///c:/Users/Lenovo/Desktop/LLb%20Coach/RESEARCH_NOTE.md): Research on LLD interview evaluation rubrics and explainability.
-- [AI_USAGE.md](file:///c:/Users/Lenovo/Desktop/LLb%20Coach/AI_USAGE.md): Transparent disclosure of AI assistance and prompt templates.
+## 🌐 Live Demo
+
+### Frontend
+
+https://lld-coach-1.onrender.com
+
+### Backend Health Check
+
+https://lld-coach-othz.onrender.com/api/health
+
+## 📄 Assignment Documents
+
+The repository includes:
+
+- `RESEARCH_NOTE.md` — Research note
+- `DESIGN_NOTE.md` — Design note
+- `AI_USAGE.md` — AI usage and evaluation architecture
+
+The corresponding PDF versions are provided separately for assignment submission.
+
+## ⚠️ Limitations
+
+This is an MVP built within a limited assignment timeframe.
+
+Current limitations include:
+
+- Limited number of curated LLD problems
+- AI evaluation depends on the configured provider
+- Fallback evaluation provides simpler feedback than AI evaluation
+- No authentication or multi-user account system
+- No background job queue for long-running evaluations
+
+These trade-offs were intentional to keep the core learner journey functional and understandable.
+
+## 🔮 Future Improvements
+
+Possible future improvements include:
+
+- More LLD problem types
+- Authentication and user profiles
+- More detailed evaluation rubrics
+- Additional AI providers
+- Asynchronous evaluation for long-running requests
+- Progress tracking and analytics
+- More advanced comparison of multiple attempts
+
+## 🎯 Project Goal
+
+The goal of LLD Coach is to make LLD practice more structured and useful by combining guided design practice, explainable evaluation, attempt history, and iterative improvement.
